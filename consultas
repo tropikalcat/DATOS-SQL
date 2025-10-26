@@ -1,0 +1,62 @@
+--- cuantos clientes tienen creditos y de que tipo son estos creditos
+SELECT tc.nombre AS tipo_credito, COUNT(DISTINCT c.rut_cliente) AS num_clientes
+FROM credito c
+JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
+GROUP BY tc.nombre;
+
+--- cuantos clientes han solicitado credito y se les ha sido rechazado 
+
+SELECT COUNT(DISTINCT s.rut_cliente) AS creditos_rechazados
+FROM solicitud s
+WHERE s.estado = 'Rechazado';
+
+--- Promedio de los creditos de libre disponibilidad
+
+SELECT 'Libre disponibilidad' AS tipo, AVG(c.monto) AS promedio
+FROM credito c
+JOIN tipo_credito tc ON  c.id_tipo_credito = tc.id_tipo_credito
+WHERE tc.nombre = 'Credito libre disponibilidad';
+
+--- Promedio de los credito de compra de cartera
+
+SELECT 'Compra de cartera' AS tipo, AVG(c.monto) AS promedio
+FROM credito c
+JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
+WHERE tc.nombre = 'Credito compra de cartera';
+
+--- cuantos clientes tienen credito y de que tipo son
+
+SELECT tc.nombre AS tipo_credito, COUNT(DISTINCT c.rut_cliente) AS num_clientes
+FROM credito c
+JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
+GROUP BY tc.nombre;
+
+--- mayor concentracionde cuotas de libre disponibilidad
+
+SELECT n_cuotas, COUNT(*) AS cantidad
+FROM credito c
+JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
+WHERE tc.nombre = 'Credito libre disponibilidad'
+GROUP BY n_cuotas
+ORDER BY cantidad DESC;
+
+--- cuantos clientes no tienen creditos en sucursal
+
+SELECT COUNT(DISTINCT c.rut) AS clientes_sin_credito_sucursal
+FROM cliente c
+LEFT JOIN solicitud s ON c.rut = s.rut_cliente
+LEFT JOIN canal ca ON s.id_canal = ca.id_canal
+LEFT JOIN credito cr ON c.rut = cr.rut_cliente
+WHERE cr.rut_cliente IS NULL
+AND ca.tipo_canal = 'Sucursal';
+
+
+ESTO ES PARA VER CADA UNA DE LAS TABLASS
+
+SELECT * FROM cliente;
+SELECT * FROM solicitud;
+SELECT * FROM credito;
+SELECT * FROM canal;
+SELECT * FROM pago;
+SELECT * FROM tasa_interes;
+SELECT * FROM tipo_credito;
