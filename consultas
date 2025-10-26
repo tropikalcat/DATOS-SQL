@@ -19,10 +19,10 @@ WHERE tc.nombre = 'Credito libre disponibilidad';
 
 --- Promedio de los credito de compra de cartera
 
-SELECT 'Compra de cartera' AS tipo, AVG(c.monto) AS promedio
+SELECT 'Credito Compra de Cartera' AS tipo, AVG(c.monto) AS promedio
 FROM credito c
 JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
-WHERE tc.nombre = 'Credito compra de cartera';
+WHERE tc.nombre = 'Credito Compra de Cartera';
 
 --- mayor concentracionde cuotas de libre disponibilidad
 
