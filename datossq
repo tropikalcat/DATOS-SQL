@@ -24,11 +24,6 @@ INSERT INTO Tasa_Interes(Porcentaje, Vigencia)Values
 (4.5, '01-03-2025'),
 (6.3, '04-07-2025');
 
-INSERT INTO Canal(Tipo_canal)VALUES
-('Pagina Web'),
-('Sucursal'),
-('App');
-
 INSERT INTO Pago(ID_credito, Dia_pago, Monto_pago, Activo)VALUES
 (1, '15-01-2025', 450000, True),
 (1, '15-02-2025', 450000, True),
@@ -46,6 +41,12 @@ INSERT INTO Interes_mora(Vigencia, Dias_atraso, Porcentaje)VALUES
 ('01-01-2025', 30, 2.0),
 ('01-01-2025', 60, 3.5),
 ('01-01-2025', 90, 5.0);
+
+INSERT INTO Canal(Tipo_canal)VALUES
+('Pagina Web'),
+('Sucursal'),
+('App');
+
 
 INSERT INTO Solicitud (Rut_cliente, ID_tipo_credito, ID_canal, Estado)VALUES
 ('9156405-1', 1, 1, 'Aprobada'),
