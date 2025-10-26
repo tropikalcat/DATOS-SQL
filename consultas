@@ -24,13 +24,6 @@ FROM credito c
 JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
 WHERE tc.nombre = 'Credito compra de cartera';
 
---- cuantos clientes tienen credito y de que tipo son
-
-SELECT tc.nombre AS tipo_credito, COUNT(DISTINCT c.rut_cliente) AS num_clientes
-FROM credito c
-JOIN tipo_credito tc ON c.id_tipo_credito = tc.id_tipo_credito
-GROUP BY tc.nombre;
-
 --- mayor concentracionde cuotas de libre disponibilidad
 
 SELECT n_cuotas, COUNT(*) AS cantidad
