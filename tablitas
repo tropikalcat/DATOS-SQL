@@ -1,0 +1,68 @@
+-- Crea la tabla de clientes, identificados por su RUT
+CREATE TABLE cliente (
+    rut VARCHAR(12) PRIMARY KEY,                -- Identificador único del cliente (RUT)
+    nombre VARCHAR(100) NOT NULL,               -- Nombre del cliente (obligatorio)
+    telefono VARCHAR(15),                       -- Teléfono del cliente (opcional)
+    direccion TEXT,                             -- Dirección del cliente (opcional)
+    renta DECIMAL(12,2) CHECK (renta >= 0),     -- Renta mensual del cliente (no negativa)
+    activo BOOLEAN DEFAULT TRUE                  -- Nuevo campo para indicar si el cliente está activo
+);
+
+-- sexito rico dijo la cata pere
+
+-- Tabla de tipos de crédito
+CREATE TABLE tipo_credito (
+    id_tipo_credito SERIAL PRIMARY KEY,           -- Identificador único autoincremental
+    nombre VARCHAR(50) NOT NULL                   -- Nombre del tipo de crédito
+);
+
+-- Tabla de créditos otorgados a clientes
+CREATE TABLE credito (
+    id_credito SERIAL PRIMARY KEY,                -- Identificador único autoincremental
+    rut_cliente VARCHAR(12) REFERENCES cliente(rut), -- Cliente asociado (elimina créditos si se elimina el cliente)
+    id_riesgo INT REFERENCES riesgo(id_riesgo), -- Riesgo asociado al crédito
+    n_cuotas INT CHECK (n_cuotas > 0),          -- Número de cuotas (debe ser mayor a 0)
+    monto DECIMAL(12,2) CHECK (monto > 0),      -- Monto del crédito (debe ser mayor a 0)
+    estado VARCHAR(50),                         -- Estado del crédito (ej: activo, pagado, etc.)
+    activo BOOLEAN DEFAULT TRUE,                -- Nuevo campo para indicar si el crédito está activo
+    id_tipo_credito INT REFERENCES tipo_credito(id_tipo_credito) -- Relación con tipo de crédito
+);
+
+-- Tabla de tasas de interés
+CREATE TABLE tasa_interes (
+    id_tasa SERIAL PRIMARY KEY,                 -- Identificador único autoincremental
+    porcentaje DECIMAL(5,2) CHECK (porcentaje >= 0), -- Porcentaje de interés (no negativo)
+    vigencia DATE                              -- Fecha de vigencia de la tasa
+);
+
+-- Tabla de pagos realizados por los clientes
+CREATE TABLE pago (
+    id_pago SERIAL PRIMARY KEY,                 -- Identificador único autoincremental
+    id_credito INT REFERENCES credito(id_credito), -- Crédito asociado (elimina pagos si se elimina el crédito)
+    dia_pago DATE NOT NULL,                     -- Fecha del pago (obligatorio)
+    monto_pago DECIMAL(12,2) CHECK (monto_pago >= 0), -- Monto pagado (no negativo)
+    activo BOOLEAN DEFAULT TRUE               -- Nuevo campo para indicar si el pago está activo
+);
+
+-- Tabla de intereses por mora (atrasos en pagos)
+CREATE TABLE interes_mora (
+    id_mora SERIAL PRIMARY KEY,                 -- Identificador único autoincremental
+    vigencia DATE,                              -- Fecha de vigencia del interés de mora
+    dias_atraso INT CHECK (dias_atraso >= 0),   -- Días de atraso (no negativo)
+    porcentaje DECIMAL(5,2) CHECK (porcentaje >= 0) -- Porcentaje de interés por mora (no negativo)
+);
+
+-- Tabla de canales de atención o pago
+CREATE TABLE canal (
+    id_canal SERIAL PRIMARY KEY,                -- Identificador único autoincremental
+    tipo_canal VARCHAR(50)                      -- Tipo de canal (ej: online, presencial, etc.)
+);
+
+CREATE TABLE Solicitud (
+id_solicitud SERIAL PRIMARY KEY,
+rut_cliente VARCHAR(12) REFERENCES cliente(rut),
+id_canal INT REFERENCES canal(id_canal),
+estado VARCHAR(20) DEFAULT 'Pendiente',
+id_tipo_credito INT REFERENCES tipo_credito(id_tipo_credito),
+activo BOOLEAN DEFAULT TRUE
+);
