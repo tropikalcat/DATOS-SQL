@@ -20,7 +20,7 @@ CREATE TABLE tipo_credito (
 CREATE TABLE credito (
     id_credito SERIAL PRIMARY KEY,                -- Identificador único autoincremental
     rut_cliente VARCHAR(12) REFERENCES cliente(rut), -- Cliente asociado (elimina créditos si se elimina el cliente)
-    id_riesgo INT REFERENCES riesgo(id_riesgo), -- Riesgo asociado al crédito
+    id_riesgo INT,                              -- Riesgo asociado al crédito
     n_cuotas INT CHECK (n_cuotas > 0),          -- Número de cuotas (debe ser mayor a 0)
     monto DECIMAL(12,2) CHECK (monto > 0),      -- Monto del crédito (debe ser mayor a 0)
     estado VARCHAR(50),                         -- Estado del crédito (ej: activo, pagado, etc.)
@@ -58,7 +58,7 @@ CREATE TABLE canal (
     tipo_canal VARCHAR(50)                      -- Tipo de canal (ej: online, presencial, etc.)
 );
 
-CREATE TABLE Solicitud (
+CREATE TABLE solicitud (
 id_solicitud SERIAL PRIMARY KEY,
 rut_cliente VARCHAR(12) REFERENCES cliente(rut),
 id_canal INT REFERENCES canal(id_canal),
