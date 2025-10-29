@@ -35,14 +35,10 @@ ORDER BY cantidad DESC;
 
 --- cuantos clientes no tienen creditos en sucursal
 
-SELECT COUNT(DISTINCT c.rut) AS clientes_sin_credito_sucursal
+SELECT COUNT(*) 
 FROM cliente c
-LEFT JOIN solicitud s ON c.rut = s.rut_cliente
-LEFT JOIN canal ca ON s.id_canal = ca.id_canal
-LEFT JOIN credito cr ON c.rut = cr.rut_cliente
-WHERE cr.rut_cliente IS NULL
-AND ca.tipo_canal = 'Sucursal';
-
+LEFT JOIN solicitud s ON c.rut = s.rut_cliente AND s.id_canal = 2
+WHERE s.rut_cliente IS NULL;
 
 ESTO ES PARA VER CADA UNA DE LAS TABLASS
 
