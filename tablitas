@@ -8,7 +8,6 @@ CREATE TABLE cliente (
     activo BOOLEAN DEFAULT TRUE                  -- Nuevo campo para indicar si el cliente está activo
 );
 
--- sexito rico dijo la cata pere
 
 -- Tabla de tipos de crédito
 CREATE TABLE tipo_credito (
